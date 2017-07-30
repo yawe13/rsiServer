@@ -6,14 +6,24 @@ var nodemon = require("gulp-nodemon"),
   path = require('path'),
   tsProject = ts.createProject("tsconfig.json"),
   clean = require("gulp-clean"),
-  jasmine = require('gulp-jasmine');
+  jasmine = require('gulp-jasmine')
+  watch = require('gulp-watch');
+
 
 
 var paths = {
   src: "./src",
   bin: "./bin"
 }
- 
+
+gulp.task('test:watch', ["test"], () => {
+  // Endless stream mode 
+  return watch('./src/**/*[sS]pec.ts', () => {
+    gulp.start('test');
+  })
+});
+
+
 gulp.task('test', ["build"], () =>
   gulp.src('./bin/**/*[sS]pec.js')
     // gulp-jasmine works on filepaths so you can't have any plugins before it 
